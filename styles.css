@@ -14,7 +14,7 @@ body, html {
 
 /* Right column */
 .right-column {
-    width: 20%;
+    width: 30%;
     height: 100%;
     background-color: #f0f0f0; /* Light gray */
     display: flex;
@@ -25,16 +25,19 @@ body, html {
 
 /* Text container */
 .text-container {
+    height: 50%;
+    width: 100%;
     text-align: center;
     margin-bottom: 20px;
 }
 
 /* Text input */
 .text-input {
-    width: 80%;
-    height: 30%;
+    width: 70%;
+    height: 100%;
     padding: 10px;
     margin-bottom: 10px;
+    font-size: 20px;
 }
 
 /* Button */
@@ -44,7 +47,7 @@ body, html {
     color: #fff; /* White */
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 25px;
     cursor: pointer;
 }
 

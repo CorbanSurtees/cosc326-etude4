@@ -1,6 +1,7 @@
-var toDraw = ""
+var toDraw = []
 
 function generateSquares() {
+    toDraw = []
     var paragraphInput = document.getElementById("paragraphInput");
     var mainContent = document.getElementById("mainContent");
 
@@ -14,14 +15,18 @@ function generateSquares() {
     // Get the value of the input
     var inputValues = paragraphInput.value.split("\n");
 
-    createSquareAt(0, 0, inputValues, 0)
+    var total = 0
+    inputValues.forEach(square => {
+        total += parseFloat(square.split(" ")[0])
+    })
 
-    if (inputValues.length > 1) {
-        generateSquare()
-    }
+    var scale = (mainContent.offsetHeight*0.75)/total
+    console.log(scale)
+
+    createSquareAt(0, 0, inputValues, scale, 0)
 }
 
-function createSquareAt(x, y, squares, depth) {
+function createSquareAt(x, y, squares, scale, depth) {
 
     if (depth >= squares.length) {
         return
@@ -29,10 +34,10 @@ function createSquareAt(x, y, squares, depth) {
 
     // Extract size and RGB values
     var values = squares[depth].split(" ");
-    var size = parseInt(values[0]);
-    var red = parseInt(values[1]);
-    var green = parseInt(values[2]);
-    var blue = parseInt(values[3]);
+    var size = parseFloat(values[0]) * scale;
+    var red = parseFloat(values[1]);
+    var green = parseFloat(values[2]);
+    var blue = parseFloat(values[3]);
 
     // Create a square element
     var square = document.createElement("div");
@@ -46,10 +51,26 @@ function createSquareAt(x, y, squares, depth) {
     square.style.marginLeft = x + 'px'
 
     // Append the square to the main content
-    mainContent.appendChild(square);
+    if (!toDraw[depth]) {
+        toDraw[depth] = []
+    }
+    toDraw[depth].push(square)
 
-    createSquareAt(x + size/2, y + size/2, squares, depth + 1)
-    createSquareAt(x + size/2, y - size/2, squares, depth + 1)
-    createSquareAt(x - size/2, y + size/2, squares, depth + 1)
-    createSquareAt(x - size/2, y - size/2, squares, depth + 1)
+    createSquareAt(x + size/2, y + size/2, squares, scale, depth + 1)
+    createSquareAt(x + size/2, y - size/2, squares, scale, depth + 1)
+    createSquareAt(x - size/2, y + size/2, squares, scale, depth + 1)
+    createSquareAt(x - size/2, y - size/2, squares, scale, depth + 1)
+
+    // recursive algorithm is complete
+    if (depth == 0) {
+        drawSquares()
+    }
+}
+
+function drawSquares() {
+    toDraw.forEach(x => {
+        x.forEach(square => {
+            mainContent.appendChild(square)
+        })
+    })
 }
