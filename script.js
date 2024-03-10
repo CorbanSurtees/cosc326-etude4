@@ -12,13 +12,33 @@ function generateSquares() {
         existingSquare = mainContent.querySelector(".square");
     }
 
-    // Get the value of the input
+    paragraphInput.value = paragraphInput.value.trim()
     var inputValues = paragraphInput.value.split("\n");
 
+    console.log(inputValues)
+    if (inputValues.length == 0 || inputValues[0].length == 0) {
+        alert("No Input")
+        return 0
+    }
+
     var total = 0
-    inputValues.forEach(square => {
-        total += parseFloat(square.split(" ")[0])
-    })
+    for (var i = 0; i < inputValues.length; i++) {
+        var square = inputValues[i]
+        var values = square.trim().split(" ")
+        if (values.length != 4) {
+            alert("Line " + (i+1) + ": Expected 4 values but recieved " + values.length)
+            return 0
+        }
+        if (values[0] < 0) {
+            alert("Line " + (i+1) + ": Scale must be 0 or higher")
+            return -1
+        }
+        if (values[1] > 255 || values[1] < 0 || values[2] > 255 || values[2] < 0 || values[3] > 255 || values[3] < 0) {
+            alert("Line " + (i+1) + ": Colour values outside of range (0-255)")
+            return 0
+        }
+        total += parseFloat(values[0])
+    }
 
     var scale = (mainContent.offsetHeight*0.75)/total
     console.log(scale)
@@ -50,7 +70,6 @@ function createSquareAt(x, y, squares, scale, depth) {
     square.style.marginTop = y + 'px'
     square.style.marginLeft = x + 'px'
 
-    // Append the square to the main content
     if (!toDraw[depth]) {
         toDraw[depth] = []
     }
