@@ -1,4 +1,9 @@
-var toDraw = []
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var toDraw = [];
+
+canvas.width = document.getElementById("mainContent").offsetWidth
+canvas.height = document.getElementById("mainContent").offsetHeight
 
 function generateSquares() {
     toDraw = []
@@ -15,7 +20,6 @@ function generateSquares() {
     paragraphInput.value = paragraphInput.value.trim()
     var inputValues = paragraphInput.value.split("\n");
 
-    console.log(inputValues)
     if (inputValues.length == 0 || inputValues[0].length == 0) {
         inputValues = ["1.0 255 0 0", "0.8 0 255 0", "0.1 0 0 255"]
     }
@@ -40,7 +44,6 @@ function generateSquares() {
     }
 
     var scale = (mainContent.offsetHeight*0.75)/total
-    console.log(scale)
 
     createSquareAt(0, 0, inputValues, scale, 0)
 }
@@ -86,9 +89,32 @@ function createSquareAt(x, y, squares, scale, depth) {
 }
 
 function drawSquares() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     toDraw.forEach(x => {
         x.forEach(square => {
-            mainContent.appendChild(square)
+            // mainContent.appendChild(square)
+            drawSquareOnCanvas(square);
         })
     })
 }
+
+function drawSquareOnCanvas(square) {
+    var color = square.style.backgroundColor;
+    ctx.fillStyle = color;
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+    var squareLeft =  parseFloat(square.style.marginLeft.split('px')[0])
+    var squareTop =  parseFloat(square.style.marginTop.split('px')[0])
+    var squareWidth =  parseFloat(square.style.width.split('px')[0])
+    var squareHeight =  parseFloat(square.style.height.split('px')[0])
+    ctx.fillRect(centerX + squareLeft - squareWidth/2, centerY + squareTop - squareHeight/2, squareWidth, squareHeight);
+}
+
+// Function to save the canvas as an image
+function exportImage() {
+    var link = document.createElement('a');
+    link.download = 'modified_image.png';
+    link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    link.click();
+}
+

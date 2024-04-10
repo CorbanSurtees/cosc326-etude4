@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Etude 4</title>
-<link rel="stylesheet" type="text/css" href="styles.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Etude 4</title>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+    </head>
 
-<div class="container">
-    <!-- Right column -->
-    <div class="right-column">
-        <div class="text-container">
-            <h2>Enter your instructions here</h2>
-            <textarea class="text-input" id="paragraphInput" placeholder="1.0 255 0 0&#10;0.8 0 255 0&#10;0.1 0 0 255"></textarea>
+    <body>
+
+    <div class="container">
+        <!-- Right column -->
+        <div class="right-column">
+            <div class="text-container">
+                <h2>Enter your instructions here</h2>
+                <textarea class="text-input" id="paragraphInput" placeholder="1.0 255 0 0&#10;0.8 0 255 0&#10;0.1 0 0 255"></textarea>
+            </div>
+            <button class="enter-button" onclick="generateSquares()">Enter</button>
+            <button onclick="exportImage()">Export as Image</button>
         </div>
-        <button class="enter-button" onclick="generateSquares()">Enter</button>
+
+        <div  class="main-content" id="mainContent">
+            <canvas id="canvas"></canvas>
+        </div>
+        
     </div>
 
-    <div class="main-content" id="mainContent">
-    </div>
-</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
 
-<script src="script.js"></script>
 
-</body>
+    </body>
 </html>
