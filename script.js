@@ -113,7 +113,7 @@ function drawSquareOnCanvas(square) {
 // Function to save the canvas as an image
 function exportImage() {
     var link = document.createElement('a');
-    link.download = 'modified_image.png';
+    link.download = 'quilt.png';
     link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     link.click();
 }

@@ -41,7 +41,7 @@ body, html {
 }
 
 /* Button */
-.enter-button {
+button {
     padding: 10px 20px;
     background-color: #007bff; /* Blue */
     color: #fff; /* White */
@@ -49,6 +49,10 @@ body, html {
     border-radius: 5px;
     font-size: 25px;
     cursor: pointer;
+}
+
+.export-button {
+    margin-left: 20px;
 }
 
 /* Main content container */
