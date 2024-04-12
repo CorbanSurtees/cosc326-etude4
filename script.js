@@ -6,19 +6,16 @@ canvas.width = document.getElementById("mainContent").offsetWidth
 canvas.height = document.getElementById("mainContent").offsetHeight
 
 function generateSquares() {
-    toDraw = []
     var paragraphInput = document.getElementById("paragraphInput");
+    generateSquaresInput(paragraphInput)
+}
+
+function generateSquaresInput(paragraphInput) {
+    toDraw = []
     var mainContent = document.getElementById("mainContent");
 
-    // Remove any existing square
-    var existingSquare = mainContent.querySelector(".square");
-    while (existingSquare) {
-        mainContent.removeChild(existingSquare);
-        existingSquare = mainContent.querySelector(".square");
-    }
-
-    paragraphInput.value = paragraphInput.value.trim()
-    var inputValues = paragraphInput.value.split("\n");
+    paragraphInput = paragraphInput.trim()
+    var inputValues = paragraphInput.split("\n");
 
     if (inputValues.length == 0 || inputValues[0].length == 0) {
         inputValues = ["1.0 255 0 0", "0.8 0 255 0", "0.1 0 0 255"]
@@ -116,5 +113,47 @@ function exportImage() {
     link.download = 'quilt.png';
     link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     link.click();
+}
+
+
+function example1() {
+    input = `
+128 0 0 0
+64 0 0 0
+32 0 0 0
+16 0 0 0
+8 0 0 0
+4 0 0 0
+2 0 0 0
+1 0 0 0
+    `
+    document.getElementById("paragraphInput").value = input.trim()
+
+    generateSquaresInput(input)
+}
+
+function example2() {
+    input = `
+81 255 0 0
+27 0 255 0
+9 0 0 255
+3 255 0 0
+1 0 255 0
+    `
+    document.getElementById("paragraphInput").value = input.trim()
+
+    generateSquaresInput(input)
+}
+
+function example3() {
+    input = `
+1 255 0 0
+0.8 0 255 0
+0.1 0 0 255
+0.5 255 0 255
+    `
+    document.getElementById("paragraphInput").value = input.trim()
+
+    generateSquaresInput(input)
 }
 
