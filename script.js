@@ -1,16 +1,19 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var toDraw = [];
+var flippedImage = false;
 
 canvas.width = document.getElementById("mainContent").offsetWidth
 canvas.height = document.getElementById("mainContent").offsetHeight
 
 function generateSquares() {
+    // get the text from text box
     var paragraphInput = document.getElementById("paragraphInput");
-    generateSquaresInput(paragraphInput)
+    generateSquaresInput(paragraphInput.value)
 }
 
 function generateSquaresInput(paragraphInput) {
+    // list of squares we need to draw
     toDraw = []
     var mainContent = document.getElementById("mainContent");
 
@@ -21,7 +24,8 @@ function generateSquaresInput(paragraphInput) {
         inputValues = ["1.0 255 0 0", "0.8 0 255 0", "0.1 0 0 255"]
     }
 
-    var total = 0
+    // keep track of total scale of squares
+    var totalScale = 0
     for (var i = 0; i < inputValues.length; i++) {
         var square = inputValues[i]
         var values = square.trim().split(" ")
@@ -37,11 +41,13 @@ function generateSquaresInput(paragraphInput) {
             alert("Line " + (i+1) + ": Colour values outside of range (0-255)")
             return 0
         }
-        total += parseFloat(values[0])
+        totalScale += parseFloat(values[0])
     }
 
-    var scale = (mainContent.offsetHeight*0.75)/total
+    // scale to multiply size of squares by, divided by total scale to ensure any pattern is the same size
+    var scale = (mainContent.offsetHeight*0.75)/totalScale
 
+    // draw the first square at (0, 0)
     createSquareAt(0, 0, inputValues, scale, 0)
 }
 
@@ -57,23 +63,15 @@ function createSquareAt(x, y, squares, scale, depth) {
     var red = parseFloat(values[1]);
     var green = parseFloat(values[2]);
     var blue = parseFloat(values[3]);
-
-    // Create a square element
-    var square = document.createElement("div");
-    square.className = "square";
-
-    // Set the size and color of the square
-    square.style.width = size + "px";
-    square.style.height = size + "px";
-    square.style.backgroundColor = "rgb(" + red + ", " + green + ", " + blue + ")";
-    square.style.marginTop = y + 'px'
-    square.style.marginLeft = x + 'px'
+    var colour = "rgb(" + red + ", " + green + ", " + blue + ")";
 
     if (!toDraw[depth]) {
         toDraw[depth] = []
     }
-    toDraw[depth].push(square)
+    // push square at depth so the draw function knows what order to draw the squares in
+    toDraw[depth].push([x, y, size, colour])
 
+    // recursive call to create next square in each corner of the square
     createSquareAt(x + size/2, y + size/2, squares, scale, depth + 1)
     createSquareAt(x + size/2, y - size/2, squares, scale, depth + 1)
     createSquareAt(x - size/2, y + size/2, squares, scale, depth + 1)
@@ -87,23 +85,25 @@ function createSquareAt(x, y, squares, scale, depth) {
 
 function drawSquares() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    toDraw.forEach(x => {
-        x.forEach(square => {
-            // mainContent.appendChild(square)
+    if (flippedImage) {
+        toDraw = toDraw.reverse()
+    }
+    toDraw.forEach(depth => {
+        depth.forEach(square => {
             drawSquareOnCanvas(square);
         })
     })
 }
 
 function drawSquareOnCanvas(square) {
-    var color = square.style.backgroundColor;
+    var color = square[3]
     ctx.fillStyle = color;
     var centerX = canvas.width / 2;
     var centerY = canvas.height / 2;
-    var squareLeft =  parseFloat(square.style.marginLeft.split('px')[0])
-    var squareTop =  parseFloat(square.style.marginTop.split('px')[0])
-    var squareWidth =  parseFloat(square.style.width.split('px')[0])
-    var squareHeight =  parseFloat(square.style.height.split('px')[0])
+    var squareLeft =  square[0]
+    var squareTop =  square[1]
+    var squareWidth =  square[2]
+    var squareHeight =  square[2]
     ctx.fillRect(centerX + squareLeft - squareWidth/2, centerY + squareTop - squareHeight/2, squareWidth, squareHeight);
 }
 
@@ -115,11 +115,17 @@ function exportImage() {
     link.click();
 }
 
+// flip display of image
+function flip() {
+    flippedImage = !flippedImage
+    generateSquares()
+}
 
+// create square using examples
 function example1() {
     input = `
-128 0 0 0
-64 0 0 0
+128 204 204 204
+64 204 204 204
 32 0 0 0
 16 0 0 0
 8 0 0 0

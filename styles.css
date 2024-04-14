@@ -40,6 +40,10 @@ body, html {
     font-size: 20px;
 }
 
+canvas {
+    background-color: D3D3D3;
+}
+
 /* Button */
 button {
     padding: 10px 20px;
@@ -53,6 +57,21 @@ button {
 
 .export-button {
     margin-left: 20px;
+}
+
+.example-button {
+    margin-top: 10px;
+}
+
+.flip-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.flip-button svg {
+    width: 20px;
+    height: 20px;
 }
 
 /* Main content container */
