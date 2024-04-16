@@ -28,7 +28,8 @@ function generateSquaresInput(paragraphInput) {
     var totalScale = 0
     for (var i = 0; i < inputValues.length; i++) {
         var square = inputValues[i]
-        var values = square.trim().split(" ")
+        var values = square.trim().split(/\s+/)
+        console.log(values)
         if (values.length != 4) {
             alert("Line " + (i+1) + ": Expected 4 values but recieved " + values.length)
             return 0
@@ -58,7 +59,7 @@ function createSquareAt(x, y, squares, scale, depth) {
     }
 
     // Extract size and RGB values
-    var values = squares[depth].split(" ");
+    var values = squares[depth].split(/\s+/);
     var size = parseFloat(values[0]) * scale;
     var red = parseFloat(values[1]);
     var green = parseFloat(values[2]);
